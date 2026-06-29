@@ -26,15 +26,9 @@ function CreateGoal() {
     e.preventDefault();
     setLoading(true);
     setError("");
-
     try {
-      const response = await api.post("/goals", {
-        ...formData,
-        name, // attach the name from the URL param
-      });
-
+      const response = await api.post("/goals", { ...formData, name });
       const goalId = response.data.goal._id;
-      // Go straight to the dashboard for this new goal
       navigate(`/dashboard/${goalId}`);
     } catch (err) {
       console.error("Error creating goal:", err);
@@ -43,12 +37,12 @@ function CreateGoal() {
     }
   };
 
-  if (loading) return <Loader />;
+  // AI is generating — show AI-specific loader
+  if (loading) return <Loader type="ai" />;
 
   return (
     <div className="home-page">
       <Navbar />
-
       <div className="hero">
         <div className="hero-content">
           <p className="hero-eyebrow">New Goal for {name}</p>
@@ -58,13 +52,11 @@ function CreateGoal() {
           </p>
         </div>
       </div>
-
       <div className="form-section">
         {error && <p className="error-message">{error}</p>}
         <form className="goal-form" onSubmit={handleSubmit}>
           <h2 className="form-heading">Set Your Goal</h2>
           <p className="form-subheading">Creating a plan for <strong>{name}</strong></p>
-
           <div className="form-group">
             <label>Goal Title</label>
             <input
@@ -76,7 +68,6 @@ function CreateGoal() {
               required
             />
           </div>
-
           <div className="form-group">
             <label>Description</label>
             <textarea
@@ -87,7 +78,6 @@ function CreateGoal() {
               rows={3}
             />
           </div>
-
           <div className="form-row">
             <div className="form-group">
               <label>Deadline</label>
@@ -112,7 +102,6 @@ function CreateGoal() {
               />
             </div>
           </div>
-
           <div className="form-group">
             <label>Current Level</label>
             <select name="level" value={formData.level} onChange={handleChange}>
@@ -121,13 +110,12 @@ function CreateGoal() {
               <option value="Advanced">Advanced</option>
             </select>
           </div>
-
           <div style={{ display: "flex", gap: "12px" }}>
             <button type="button" className="btn-secondary" onClick={() => navigate(`/goals/${name}`)}>
               ← Back
             </button>
             <button type="submit" className="btn-primary">
-               Generate Plan
+              ✦ Generate Plan
             </button>
           </div>
         </form>

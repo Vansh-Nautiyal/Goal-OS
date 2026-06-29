@@ -1,5 +1,7 @@
 import Groq from "groq-sdk";
 import { roadmapPrompt, recalculatePrompt } from "../utils/promptTemplates.js";
+import dotenv from "dotenv"
+dotenv.config();
 
 // Initialize Groq with the API key from .env
 const groq = new Groq({
